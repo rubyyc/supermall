@@ -8,7 +8,7 @@
   <home-swiper :banners="banners"></home-swiper>
   <recommend-view :recommends="recommends"></recommend-view>
   <feature-views></feature-views>
-  <tab-control class="tab-control" :titles="['流行','新款','精选']"></tab-control>
+  <tab-control class="tab-control" :titles="titles"></tab-control>
   <ul>
     <li>列表1</li>
     <li>列表2</li>
@@ -72,7 +72,7 @@ import HomeSwiper from './childComponents/HomeSwiper'
 import RecommendView from './childComponents/RecommendView'
 import FeatureViews from './childComponents/FeatureViews'
 
-import { getHomeMultiData } from 'network/home'
+import { getHomeMultiData, getHomeGoods } from 'network/home'
 
 export default {
   name: 'Home',
@@ -83,19 +83,48 @@ export default {
     FeatureViews,
     TabControl
   },
-  data () {
+  data() {
     return {
       banners: [],
       recommends: [],
-      titles: []
+      titles: ['流行', '新款', '精选'],
+      goods: {
+        pop: {
+          page: 0,
+          list: []
+        },
+        new: {
+          page: 0,
+          list: []
+        },
+        sell: {
+          page: 0,
+          list: []
+        }
+      }
     }
   },
-  created () {
-    getHomeMultiData().then(res => {
-      console.log(res)
-      this.banners = res.data.banner.list
-      this.recommends = res.data.recommend.list
-    })
+  created() {
+    this.getHomeMultiData()
+    this.getHomeGoods('pop')
+    this.getHomeGoods('new')
+    this.getHomeGoods('sell')
+  },
+  methods: {
+    getHomeMultiData() {
+      getHomeMultiData().then(res => {
+        // console.log(res)
+        this.banners = res.data.banner.list
+        this.recommends = res.data.recommend.list
+      })
+    },
+    getHomeGoods(type) {
+      const page = this.goods[type].page + 1
+      getHomeGoods(type, page).then(res => {
+        this.goods[type].list.push(...res.data.list)
+        this.goods[type].page += 1
+      })
+    }
   }
 }
 </script>
