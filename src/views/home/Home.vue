@@ -5,17 +5,20 @@
       购物街
     </div>
   </nav-bar>
+  <home-swiper :banners="banners"></home-swiper>
 </div>
 </template>
 
 <script>
 import NavBar from 'components/common/navbar/NavBar'
+import HomeSwiper from './childComponents/HomeSwiper'
 import { getHomeMultiData } from 'network/home'
 
 export default {
   name: 'Home',
   components: {
-    NavBar
+    NavBar,
+    HomeSwiper
   },
   data () {
     return {
