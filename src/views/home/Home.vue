@@ -5,18 +5,21 @@
       购物街
     </div>
   </nav-bar>
-  <home-swiper :banners="banners"></home-swiper>
-  <recommend-view :recommends="recommends"></recommend-view>
-  <feature-views></feature-views>
-  <tab-control class="tab-control" :titles="titles" @tabClick="tabClick"></tab-control>
-  <goods-list :goods="showGoods"></goods-list>
+  <scroll class="content">
+    <home-swiper :banners="banners"></home-swiper>
+    <recommend-view :recommends="recommends"></recommend-view>
+    <feature-views></feature-views>
+    <tab-control class="tab-control" :titles="titles" @tabClick="tabClick"></tab-control>
+    <goods-list :goods="showGoods"></goods-list>
+  </scroll>
 </div>
 </template>
 
 <script>
 import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
-import GoodsList from '../../components/content/goods/GoodsList'
+import GoodsList from 'components/content/goods/GoodsList'
+import Scroll from 'components/common/scroll/Scroll'
 
 import HomeSwiper from './childComponents/HomeSwiper'
 import RecommendView from './childComponents/RecommendView'
@@ -32,7 +35,8 @@ export default {
     RecommendView,
     FeatureViews,
     TabControl,
-    GoodsList
+    GoodsList,
+    Scroll
   },
   data() {
     return {
@@ -108,6 +112,7 @@ export default {
 <style scoped>
 #home {
   padding-top: 44px;
+  height: 100vh;
 }
 .home-nav {
   background-color: var(--color-tint);
@@ -119,8 +124,22 @@ export default {
   z-index: 9;
 }
 .tab-control {
-  position: sticky;
+  /*position: sticky;*/
   top: 44px;
   z-index: 9;
 }
+.content {
+  /*height: 300px;*/
+  overflow: hidden;
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
+}
+/*.content{*/
+/*  height: calc(100% - 93px);*/
+/*  overflow: hidden;*/
+/*  margin-top: 44px;*/
+/*}*/
 </style>
