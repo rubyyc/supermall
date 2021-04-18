@@ -74,10 +74,12 @@ export default {
     this.getHomeGoods('pop')
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
-    // bus监听 叔侄组件的事件监听
+  },
+  mounted () {
+    // bus监听 爷孙/非父子组件的事件监听
     this.$bus.$on('itemImageLoad', () => {
-      console.log('bus接收成功')
-      this.$refs.scroll.refresh()
+      // console.log('bus接收成功')
+      this.$refs.scroll && this.$refs.scroll.refresh()
     })
   },
   methods: {
@@ -87,7 +89,7 @@ export default {
         // console.log(res)
         this.banners = res.data.banner.list
         this.recommends = res.data.recommend.list
-        console.log('获取图片')
+        // console.log('获取图片')
       })
     },
     getHomeGoods(type) {
@@ -95,7 +97,7 @@ export default {
       getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
-        // this.$refs.scroll.scroll.refresh()
+        this.$refs.scroll.scroll.refresh()
       })
     },
     // 事件监听
