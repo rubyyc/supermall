@@ -5,7 +5,7 @@
       购物街
     </div>
   </nav-bar>
-  <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
+  <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true" @pullingUp="loadMore">
     <home-swiper :banners="banners"></home-swiper>
     <recommend-view :recommends="recommends"></recommend-view>
     <feature-views></feature-views>
@@ -89,6 +89,7 @@ export default {
       getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
+        this.$refs.scroll.scroll.refresh()
       })
     },
     // 事件监听
@@ -113,14 +114,23 @@ export default {
       // console.log('bc')
       this.$refs.scroll.scrollTo(0, 0, 1000)
     },
+    // back top
     contentScroll(position) {
-      console.log(position)
+      // console.log(position)
       // const y = position.y
       if (-position.y > 1000) {
         this.isShowBackTop = true
       } else {
         this.isShowBackTop = false
       }
+    },
+    // 上拉加载更多
+    loadMore() {
+      // console.log('loading----')
+      this.getHomeGoods(this.currentType)
+      // 进行下一次下拉更更多
+      this.$refs.scroll.finishPullUp()
+      this.$refs.scroll.scroll.refresh()
     }
   }
 }
