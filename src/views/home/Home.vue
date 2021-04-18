@@ -5,13 +5,14 @@
       购物街
     </div>
   </nav-bar>
-  <scroll class="content">
+  <scroll class="content" ref="scroll">
     <home-swiper :banners="banners"></home-swiper>
     <recommend-view :recommends="recommends"></recommend-view>
     <feature-views></feature-views>
     <tab-control class="tab-control" :titles="titles" @tabClick="tabClick"></tab-control>
     <goods-list :goods="showGoods"></goods-list>
   </scroll>
+  <back-top @click.native="backClick"></back-top>
 </div>
 </template>
 
@@ -20,6 +21,7 @@ import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
 import GoodsList from 'components/content/goods/GoodsList'
 import Scroll from 'components/common/scroll/Scroll'
+import BackTop from 'components/content/backTop/BackTop'
 
 import HomeSwiper from './childComponents/HomeSwiper'
 import RecommendView from './childComponents/RecommendView'
@@ -36,7 +38,8 @@ export default {
     FeatureViews,
     TabControl,
     GoodsList,
-    Scroll
+    Scroll,
+    BackTop
   },
   data() {
     return {
@@ -104,6 +107,10 @@ export default {
           this.currentType = 'pop'
           break
       }
+    },
+    backClick() {
+      // console.log('bc')
+      this.$refs.scroll.scrollTo(0, 0, 2000)
     }
   }
 }
