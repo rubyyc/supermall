@@ -77,12 +77,23 @@ export default {
   },
   mounted () {
     // bus监听 爷孙/非父子组件的事件监听
+    const refresh = this.debounce(this.$refs.scroll && this.$refs.scroll.refresh, 500)
     this.$bus.$on('itemImageLoad', () => {
       // console.log('bus接收成功')
-      this.$refs.scroll && this.$refs.scroll.refresh()
+      refresh()
     })
   },
   methods: {
+    // 防抖/节流
+    debounce(func, delay) {
+      let timer = null
+      return function(...args) {
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+          func.apply(this, args)
+        }, delay)
+      }
+    },
     // 网络请求
     getHomeMultiData() {
       getHomeMultiData().then(res => {
@@ -97,7 +108,7 @@ export default {
       getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
-        this.$refs.scroll.scroll.refresh()
+        // this.$refs.scroll.scroll.refresh()
       })
     },
     // 事件监听
