@@ -65,7 +65,8 @@ export default {
       currentType: 'pop',
       isShowBackTop: false,
       tabOffsetTop: 0,
-      isTabFixed: false
+      isTabFixed: false,
+      saveY: 0
     }
   },
   computed: {
@@ -149,6 +150,18 @@ export default {
       // console.log(this.$refs.tabControl.$el.offsetTop)
       this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
     }
+  },
+  destroyed() {
+    console.log('destroy')
+  },
+  activated() {
+    console.log('activated')
+    this.$refs.scroll.scrollTo(0, this.saveY, 0)
+    this.$refs.scroll.refresh()
+  },
+  deactivated() {
+    console.log('deactivated')
+    this.saveY = this.$refs.scroll.getScrollY()
   }
 }
 </script>

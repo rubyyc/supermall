@@ -53,6 +53,9 @@ export default {
     refresh() {
       this.scroll && this.scroll.refresh()
       // console.log('delay-refresh')
+    },
+    getScrollY() {
+      return this.scroll ? this.scroll.y : 0
     }
   }
 }
