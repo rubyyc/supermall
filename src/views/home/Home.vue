@@ -5,11 +5,12 @@
       购物街
     </div>
   </nav-bar>
+  <tab-control ref="tabControl1" :titles="titles" @tabClick="tabClick" class="tab-control" v-show="isTabFixed"></tab-control>
   <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true" @pullingUp="loadMore">
-    <home-swiper :banners="banners"></home-swiper>
+    <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"></home-swiper>
     <recommend-view :recommends="recommends"></recommend-view>
     <feature-views></feature-views>
-    <tab-control class="tab-control" :titles="titles" @tabClick="tabClick"></tab-control>
+    <tab-control ref="tabControl2" :titles="titles" @tabClick="tabClick"></tab-control>
     <goods-list :goods="showGoods"></goods-list>
   </scroll>
   <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
@@ -28,6 +29,7 @@ import RecommendView from './childComponents/RecommendView'
 import FeatureViews from './childComponents/FeatureViews'
 
 import { getHomeMultiData, getHomeGoods } from 'network/home'
+import { debounce } from 'common/utils'
 
 export default {
   name: 'Home',
@@ -61,7 +63,9 @@ export default {
         }
       },
       currentType: 'pop',
-      isShowBackTop: false
+      isShowBackTop: false,
+      tabOffsetTop: 0,
+      isTabFixed: false
     }
   },
   computed: {
@@ -77,23 +81,13 @@ export default {
   },
   mounted () {
     // bus监听 爷孙/非父子组件的事件监听
-    const refresh = this.debounce(this.$refs.scroll && this.$refs.scroll.refresh, 500)
+    const refresh = debounce(this.$refs.scroll && this.$refs.scroll.refresh, 500)
     this.$bus.$on('itemImageLoad', () => {
       // console.log('bus接收成功')
       refresh()
     })
   },
   methods: {
-    // 防抖/节流
-    debounce(func, delay) {
-      let timer = null
-      return function(...args) {
-        if (timer) clearTimeout(timer)
-        timer = setTimeout(() => {
-          func.apply(this, args)
-        }, delay)
-      }
-    },
     // 网络请求
     getHomeMultiData() {
       getHomeMultiData().then(res => {
@@ -128,6 +122,8 @@ export default {
           this.currentType = 'pop'
           break
       }
+      this.$refs.tabControl1.currentIndex = index
+      this.$refs.tabControl2.currentIndex = index
     },
     backClick() {
       // console.log('bc')
@@ -137,11 +133,9 @@ export default {
     contentScroll(position) {
       // console.log(position)
       // const y = position.y
-      if (-position.y > 1000) {
-        this.isShowBackTop = true
-      } else {
-        this.isShowBackTop = false
-      }
+      this.isShowBackTop = -position.y > 1000
+      // 吸顶效果
+      this.isTabFixed = (-position.y) > this.tabOffsetTop
     },
     // 上拉加载更多
     loadMore() {
@@ -150,6 +144,10 @@ export default {
       // 进行下一次下拉更更多
       this.$refs.scroll.finishPullUp()
       this.$refs.scroll.scroll.refresh()
+    },
+    swiperImageLoad() {
+      // console.log(this.$refs.tabControl.$el.offsetTop)
+      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
     }
   }
 }
@@ -157,23 +155,23 @@ export default {
 
 <style scoped>
 #home {
-  padding-top: 44px;
+  /*padding-top: 44px;*/
   height: 100vh;
 }
 .home-nav {
   background-color: var(--color-tint);
   color: #fff;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: 9;
+  /*position: fixed;*/
+  /*left: 0;*/
+  /*right: 0;*/
+  /*top: 0;*/
+  /*z-index: 9;*/
 }
-.tab-control {
-  /*position: sticky;*/
-  top: 44px;
-  z-index: 9;
-}
+/*.tab-control {*/
+/*  !*position: sticky;*!*/
+/*  top: 44px;*/
+/*  z-index: 9;*/
+/*}*/
 .content {
   /*height: 300px;*/
   overflow: hidden;
@@ -182,6 +180,10 @@ export default {
   bottom: 49px;
   left: 0;
   right: 0;
+}
+.tab-control {
+  position: relative;
+  z-index: 9;
 }
 /*.content{*/
 /*  height: calc(100% - 93px);*/
