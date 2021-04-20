@@ -39,8 +39,7 @@ export default {
       detailInfo: {},
       paramInfo: {},
       commentInfo: {},
-      recommends: [],
-      ItemImgListener: null
+      recommends: []
     }
   },
   created() {

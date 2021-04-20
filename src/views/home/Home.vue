@@ -68,8 +68,7 @@ export default {
       isShowBackTop: false,
       tabOffsetTop: 0,
       isTabFixed: false,
-      saveY: 0,
-      ItemImgListener: null
+      saveY: 0
     }
   },
   computed: {
