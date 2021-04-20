@@ -6,6 +6,8 @@
       <detail-base-info :goods="goods"></detail-base-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
       <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"></detail-goods-info>
+      <detail-param-info :paramInfo="paramInfo"></detail-param-info>
+      <detail-comment-info :commentInfo="commentInfo"></detail-comment-info>
     </scroll>
   </div>
 </template>
@@ -16,9 +18,11 @@ import DetailSwiper from './childComponents/DetailSwiper'
 import DetailBaseInfo from './childComponents/DetailBaseInfo'
 import DetailShopInfo from './childComponents/DetailShopInfo'
 import DetailGoodsInfo from './childComponents/DetailGoodsInfo'
+import DetailParamInfo from './childComponents/DetailParamInfo'
+import DetailCommentInfo from './childComponents/DetailCommentInfo'
 import Scroll from 'components/common/scroll/Scroll'
 
-import { getDetail, Goods, Shop } from 'network/detail'
+import { getDetail, Goods, Shop, GoodsParam } from 'network/detail'
 export default {
   name: 'Detail',
   data() {
@@ -27,7 +31,9 @@ export default {
       topImages: [],
       goods: {},
       shop: {},
-      detailInfo: {}
+      detailInfo: {},
+      paramInfo: {},
+      commentInfo: {}
     }
   },
   created() {
@@ -51,6 +57,12 @@ export default {
         this.shop = new Shop(data.shopInfo)
         // detailInfo
         this.detailInfo = data.detailInfo
+        // GoodsParam
+        this.paramInfo = new GoodsParam(data.itemParams.info, data.itemParams.rule)
+        // commentinfo
+        if (data.rate.cRate !== 0) {
+          this.commentInfo = data.rate.list[0]
+        }
       })
     }
   },
@@ -65,6 +77,8 @@ export default {
     DetailBaseInfo,
     DetailShopInfo,
     DetailGoodsInfo,
+    DetailParamInfo,
+    DetailCommentInfo,
     Scroll
   }
 }
