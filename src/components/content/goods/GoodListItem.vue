@@ -28,15 +28,15 @@ export default {
     itemClick() {
       // const iid = this.goodsItem.iid ? this.goodsItem.iid : this.goodsItem.item_id
       const iid = this.goodsItem.iid ? this.goodsItem.iid : '1m8k4ps'
-      console.log('iid:', iid)
-      console.log('this.$router', this.$route.path)
+      // console.log('iid:', iid)
+      // console.log('this.$router', this.$route.path)
       if (this.$route.path.indexOf('/detail') !== -1) {
         this.$router.replace('/detail/' + iid)
-        console.log('if')
+        // console.log('if')
         this.$router.go(0)
       } else {
         this.$router.push('/detail/' + iid)
-        console.log('else')
+        // console.log('else')
       }
     }
   },

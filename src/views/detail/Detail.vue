@@ -1,14 +1,14 @@
 <template>
   <div class="detail">
-    <detail-nav-bar class="detail-nav"></detail-nav-bar>
+    <detail-nav-bar class="detail-nav" @titleClick="titleClick"></detail-nav-bar>
     <scroll class="content" ref="scroll">
       <detail-swiper :top-images="topImages"></detail-swiper>
       <detail-base-info :goods="goods"></detail-base-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
       <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"></detail-goods-info>
-      <detail-param-info :paramInfo="paramInfo"></detail-param-info>
-      <detail-comment-info :commentInfo="commentInfo"></detail-comment-info>
-      <goods-list :goods="recommends"></goods-list>
+      <detail-param-info :paramInfo="paramInfo" ref="params"></detail-param-info>
+      <detail-comment-info :commentInfo="commentInfo" ref="comment"></detail-comment-info>
+      <goods-list :goods="recommends" ref="recommend"></goods-list>
     </scroll>
   </div>
 </template>
@@ -39,7 +39,8 @@ export default {
       detailInfo: {},
       paramInfo: {},
       commentInfo: {},
-      recommends: []
+      recommends: [],
+      themeTopYs: []
     }
   },
   created() {
@@ -76,6 +77,10 @@ export default {
       getRecommend().then(res => {
         // console.log(res)
         this.recommends = res.data.list
+      })
+      // console.log(this.themeTopYs)
+      this.$nextTick(() => {
+        // this.$refs.scroll.refresh()
       })
     }
   },
@@ -115,6 +120,16 @@ export default {
   methods: {
     imageLoad() {
       this.$refs.scroll.refresh()
+      this.themeTopYs = []
+      this.themeTopYs.push(0)
+      this.themeTopYs.push(this.$refs.params.$el.offsetTop)
+      this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
+      this.themeTopYs.push(this.$refs.recommend.$el.offsetTop)
+      console.log(this.themeTopYs)
+    },
+    titleClick(index) {
+      // console.log('titleClick---', index)
+      this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 1500)
     }
   },
   deactivated() {
