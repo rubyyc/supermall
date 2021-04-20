@@ -1,10 +1,11 @@
 <template>
   <div class="detail">
     <detail-nav-bar class="detail-nav"></detail-nav-bar>
-    <scroll class="content">
+    <scroll class="content" ref="scroll">
       <detail-swiper :top-images="topImages"></detail-swiper>
       <detail-base-info :goods="goods"></detail-base-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
+      <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"></detail-goods-info>
     </scroll>
   </div>
 </template>
@@ -14,6 +15,7 @@ import DetailNavBar from './childComponents/DetailNavBar'
 import DetailSwiper from './childComponents/DetailSwiper'
 import DetailBaseInfo from './childComponents/DetailBaseInfo'
 import DetailShopInfo from './childComponents/DetailShopInfo'
+import DetailGoodsInfo from './childComponents/DetailGoodsInfo'
 import Scroll from 'components/common/scroll/Scroll'
 
 import { getDetail, Goods, Shop } from 'network/detail'
@@ -24,7 +26,8 @@ export default {
       iid: null,
       topImages: [],
       goods: {},
-      shop: {}
+      shop: {},
+      detailInfo: {}
     }
   },
   created() {
@@ -46,7 +49,14 @@ export default {
         this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services)
         // 获取商品的商店的信息
         this.shop = new Shop(data.shopInfo)
+        // detailInfo
+        this.detailInfo = data.detailInfo
       })
+    }
+  },
+  methods: {
+    imageLoad() {
+      this.$refs.scroll.refresh()
     }
   },
   components: {
@@ -54,6 +64,7 @@ export default {
     DetailSwiper,
     DetailBaseInfo,
     DetailShopInfo,
+    DetailGoodsInfo,
     Scroll
   }
 }
