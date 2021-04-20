@@ -25,6 +25,7 @@ import GoodsList from 'components/content/goods/GoodsList'
 import Scroll from 'components/common/scroll/Scroll'
 
 import { getDetail, Goods, Shop, GoodsParam, getRecommend } from 'network/detail'
+import { debounce } from 'common/utils'
 export default {
   name: 'Detail',
   data() {
@@ -36,7 +37,8 @@ export default {
       detailInfo: {},
       paramInfo: {},
       commentInfo: {},
-      recommends: []
+      recommends: [],
+      ItemImgListener: null
     }
   },
   created() {
@@ -44,10 +46,8 @@ export default {
     // getDetail(this.iid).then(res => {
     //   console.log(res)
     // })
-  },
-  activated () {
     if (this.iid !== this.$route.params.iid) {
-      this.$refs.scroll.scrollTo(0, 0, 0)
+      this.$refs.scroll && this.$refs.scroll.scrollTo(0, 0, 0)
       this.iid = this.$route.params.iid
       getDetail(this.iid).then(res => {
         const data = res.result
@@ -68,7 +68,7 @@ export default {
           this.commentInfo = data.rate.list[0]
         }
         setTimeout(() => {
-          this.$refs.scroll.refresh()
+          this.$refs.scroll && this.$refs.scroll.refresh()
         }, 1000)
       })
       // 获取推荐商品
@@ -78,10 +78,58 @@ export default {
       })
     }
   },
+  activated () {
+    // if (this.iid !== this.$route.params.iid) {
+    //   this.$refs.scroll.scrollTo(0, 0, 0)
+    //   this.iid = this.$route.params.iid
+    //   getDetail(this.iid).then(res => {
+    //     const data = res.result
+    //     // console.log(res)
+    //     // 获取顶部轮播数据
+    //     this.topImages = data.itemInfo.topImages
+    //     // console.log(this.topImages)
+    //     // 获取商品简单描述
+    //     this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services)
+    //     // 获取商品的商店的信息
+    //     this.shop = new Shop(data.shopInfo)
+    //     // detailInfo
+    //     this.detailInfo = data.detailInfo
+    //     // GoodsParam
+    //     this.paramInfo = new GoodsParam(data.itemParams.info, data.itemParams.rule)
+    //     // commentinfo
+    //     if (data.rate.cRate !== 0) {
+    //       this.commentInfo = data.rate.list[0]
+    //     }
+    //     setTimeout(() => {
+    //       this.$refs.scroll.refresh()
+    //     }, 1000)
+    //   })
+    //   // 获取推荐商品
+    //   getRecommend().then(res => {
+    //     // console.log(res)
+    //     this.recommends = res.data.list
+    //   })
+    // }
+  },
   methods: {
     imageLoad() {
       this.$refs.scroll.refresh()
     }
+  },
+  mounted () {
+    const refresh = debounce(this.$refs.scroll && this.$refs.scroll.refresh, 500)
+
+    this.ItemImgListener = () => {
+      refresh()
+    }
+    this.$bus.$on('itemImageLoad', this.ItemImgListener)
+  },
+  deactivated() {
+    console.log('---deactivated--')
+  },
+  destroyed() {
+    console.log('destoryed')
+    this.$bus.$off('itemImageLoad', this.ItemImgListener)
   },
   components: {
     DetailNavBar,

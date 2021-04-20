@@ -66,7 +66,8 @@ export default {
       isShowBackTop: false,
       tabOffsetTop: 0,
       isTabFixed: false,
-      saveY: 0
+      saveY: 0,
+      ItemImgListener: null
     }
   },
   computed: {
@@ -83,10 +84,11 @@ export default {
   mounted () {
     // bus监听 爷孙/非父子组件的事件监听
     const refresh = debounce(this.$refs.scroll && this.$refs.scroll.refresh, 500)
-    this.$bus.$on('itemImageLoad', () => {
+    this.ItemImgListener = () => {
       // console.log('bus接收成功')
       refresh()
-    })
+    }
+    this.$bus.$on('itemImageLoad', this.ItemImgListener)
   },
   methods: {
     // 网络请求
@@ -162,6 +164,8 @@ export default {
   deactivated() {
     // console.log('deactivated')
     this.saveY = this.$refs.scroll.getScrollY()
+    // 取消全局事件
+    this.$bus.$off('itemImageLoad', this.ItemImgListener)
   }
 }
 </script>
