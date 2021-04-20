@@ -25,9 +25,11 @@ import GoodsList from 'components/content/goods/GoodsList'
 import Scroll from 'components/common/scroll/Scroll'
 
 import { getDetail, Goods, Shop, GoodsParam, getRecommend } from 'network/detail'
-import { debounce } from 'common/utils'
+// import { debounce } from 'common/utils'
+import { itemListenerMixin } from 'common/mixin'
 export default {
   name: 'Detail',
+  mixins: [itemListenerMixin],
   data() {
     return {
       iid: null,
@@ -116,19 +118,11 @@ export default {
       this.$refs.scroll.refresh()
     }
   },
-  mounted () {
-    const refresh = debounce(this.$refs.scroll && this.$refs.scroll.refresh, 500)
-
-    this.ItemImgListener = () => {
-      refresh()
-    }
-    this.$bus.$on('itemImageLoad', this.ItemImgListener)
-  },
   deactivated() {
-    console.log('---deactivated--')
+    // console.log('---deactivated--')
   },
   destroyed() {
-    console.log('destoryed')
+    // console.log('destoryed')
     this.$bus.$off('itemImageLoad', this.ItemImgListener)
   },
   components: {

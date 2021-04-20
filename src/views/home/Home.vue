@@ -29,7 +29,8 @@ import RecommendView from './childComponents/RecommendView'
 import FeatureViews from './childComponents/FeatureViews'
 
 import { getHomeMultiData, getHomeGoods } from 'network/home'
-import { debounce } from 'common/utils'
+// import { debounce } from 'common/utils'
+import { itemListenerMixin } from 'common/mixin'
 
 export default {
   name: 'Home',
@@ -43,6 +44,7 @@ export default {
     Scroll,
     BackTop
   },
+  mixins: [itemListenerMixin],
   data() {
     return {
       banners: [],
@@ -81,15 +83,15 @@ export default {
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
   },
-  mounted () {
-    // bus监听 爷孙/非父子组件的事件监听
-    const refresh = debounce(this.$refs.scroll && this.$refs.scroll.refresh, 500)
-    this.ItemImgListener = () => {
-      // console.log('bus接收成功')
-      refresh()
-    }
-    this.$bus.$on('itemImageLoad', this.ItemImgListener)
-  },
+  // mounted () {
+  //   // bus监听 爷孙/非父子组件的事件监听
+  //   const refresh = debounce(this.$refs.scroll && this.$refs.scroll.refresh, 500)
+  //   this.ItemImgListener = () => {
+  //     // console.log('bus接收成功')
+  //     refresh()
+  //   }
+  //   this.$bus.$on('itemImageLoad', this.ItemImgListener)
+  // },
   methods: {
     // 网络请求
     getHomeMultiData() {
