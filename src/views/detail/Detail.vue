@@ -44,6 +44,7 @@ export default {
   },
   activated () {
     if (this.iid !== this.$route.params.iid) {
+      this.$refs.scroll.scrollTo(0, 0, 0)
       this.iid = this.$route.params.iid
       getDetail(this.iid).then(res => {
         const data = res.result
@@ -63,6 +64,9 @@ export default {
         if (data.rate.cRate !== 0) {
           this.commentInfo = data.rate.list[0]
         }
+        setTimeout(() => {
+          this.$refs.scroll.refresh()
+        }, 1000)
       })
     }
   },
