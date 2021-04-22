@@ -33,6 +33,9 @@ export default {
     },
     backClick() {
       this.$router.back()
+    },
+    changeTitleColor(index) {
+      this.currentIndex = index
     }
   }
 }

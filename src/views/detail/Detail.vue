@@ -1,7 +1,7 @@
 <template>
   <div class="detail">
-    <detail-nav-bar class="detail-nav" @titleClick="titleClick"></detail-nav-bar>
-    <scroll class="content" ref="scroll">
+    <detail-nav-bar class="detail-nav" @titleClick="titleClick" ref="detailNav"></detail-nav-bar>
+    <scroll class="content" ref="scroll" :probeType="3" @scroll="contentScroll">
       <detail-swiper :top-images="topImages"></detail-swiper>
       <detail-base-info :goods="goods"></detail-base-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
@@ -40,7 +40,8 @@ export default {
       paramInfo: {},
       commentInfo: {},
       recommends: [],
-      themeTopYs: []
+      themeTopYs: [],
+      currentIndex: 0
     }
   },
   created() {
@@ -125,11 +126,29 @@ export default {
       this.themeTopYs.push(this.$refs.params.$el.offsetTop)
       this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
       this.themeTopYs.push(this.$refs.recommend.$el.offsetTop)
+      this.themeTopYs.push(Number.MAX_VALUE)
       console.log(this.themeTopYs)
     },
     titleClick(index) {
       // console.log('titleClick---', index)
       this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 1500)
+    },
+    contentScroll(position) {
+      // console.log('scroll', position)
+      const positionY = -position.y
+      // console.log(positionY)
+      const length = this.themeTopYs.length
+      for (let i = 0; i < length; i++) {
+        const iPos = this.themeTopYs[i]
+        if (positionY >= iPos && positionY < this.themeTopYs[i + 1]) {
+          // console.log(this.currentIndex)
+          if (this.currentIndex !== i) {
+            this.currentIndex = i
+            this.$refs.detailNav.currentIndex = this.currentIndex
+          }
+          break
+        }
+      }
     }
   },
   deactivated() {
