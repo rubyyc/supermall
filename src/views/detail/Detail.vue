@@ -168,7 +168,7 @@ export default {
       product.desc = this.goods.desc
       product.realPrice = this.goods.realPrice
       product.iid = this.iid
-      console.log(product)
+      // console.log(product)
       this.addCart({ product })
     }
   },

@@ -5,6 +5,7 @@ export default {
     oldProduct.count++
   },
   [ADD_TO_CART](state, newProduct) {
+    newProduct.checked = true
     state.cartList.push(newProduct)
   }
 }
