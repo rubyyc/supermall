@@ -166,7 +166,7 @@ export default {
       product.image = this.topImages[0]
       product.title = this.goods.title
       product.desc = this.goods.desc
-      product.realPrice = this.goods.newPrice
+      product.realPrice = this.goods.realPrice
       product.iid = this.iid
       console.log(product)
       this.addCart({ product })
