@@ -10,7 +10,7 @@
       <detail-comment-info :commentInfo="commentInfo" ref="comment"></detail-comment-info>
       <goods-list :goods="recommends" ref="recommend"></goods-list>
     </scroll>
-    <detail-bottom-bar></detail-bottom-bar>
+    <detail-bottom-bar @addToCart="addToCart"></detail-bottom-bar>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
@@ -155,6 +155,16 @@ export default {
         }
       }
       this.isShowBackTop = -position.y > TOP_DISTANCE
+    },
+    addToCart() {
+      // 获取购物车需要展示的信息
+      const product = {}
+      product.image = this.topImages[0]
+      product.title = this.goods.title
+      product.desc = this.goods.desc
+      product.realPrice = this.goods.newPrice
+      product.iid = this.iid
+      console.log(product)
     }
   },
   deactivated() {
