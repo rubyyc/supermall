@@ -32,6 +32,7 @@ import { getDetail, Goods, Shop, GoodsParam, getRecommend } from 'network/detail
 // import { debounce } from 'common/utils'
 import { itemListenerMixin, backTopMixin } from 'common/mixin'
 import { TOP_DISTANCE } from 'common/const'
+import { mapActions } from 'vuex'
 export default {
   name: 'Detail',
   mixins: [itemListenerMixin, backTopMixin],
@@ -124,6 +125,9 @@ export default {
     // }
   },
   methods: {
+    ...mapActions([
+      'addCart'
+    ]),
     imageLoad() {
       this.$refs.scroll.refresh()
       this.themeTopYs = []
@@ -165,6 +169,7 @@ export default {
       product.realPrice = this.goods.newPrice
       product.iid = this.iid
       console.log(product)
+      this.addCart({ product })
     }
   },
   deactivated() {

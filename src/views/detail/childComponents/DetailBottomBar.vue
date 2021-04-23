@@ -39,15 +39,16 @@ export default {
 <style scoped>
 .bottom-bar {
   height: 49px;
-  position: relative;
+  position: fixed;
   background-color: #fff;
-  /*left: 0;*/
-  /*right: 0;*/
-  /*bottom: 0;*/
+  left: 0;
+  right: 0;
+  bottom: 0;
   /*bottom: 49px;*/
 
   display: flex;
   text-align: center;
+  /*z-index: 1000;*/
 }
 
 .bar-item {
