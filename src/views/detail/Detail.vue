@@ -11,6 +11,7 @@
       <goods-list :goods="recommends" ref="recommend"></goods-list>
     </scroll>
     <detail-bottom-bar></detail-bottom-bar>
+    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 
@@ -25,13 +26,15 @@ import DetailCommentInfo from './childComponents/DetailCommentInfo'
 import DetailBottomBar from './childComponents/DetailBottomBar'
 import GoodsList from 'components/content/goods/GoodsList'
 import Scroll from 'components/common/scroll/Scroll'
+import BackTop from 'components/content/backTop/BackTop'
 
 import { getDetail, Goods, Shop, GoodsParam, getRecommend } from 'network/detail'
 // import { debounce } from 'common/utils'
-import { itemListenerMixin } from 'common/mixin'
+import { itemListenerMixin, backTopMixin } from 'common/mixin'
+import { TOP_DISTANCE } from 'common/const'
 export default {
   name: 'Detail',
-  mixins: [itemListenerMixin],
+  mixins: [itemListenerMixin, backTopMixin],
   data() {
     return {
       iid: null,
@@ -129,7 +132,7 @@ export default {
       this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
       this.themeTopYs.push(this.$refs.recommend.$el.offsetTop)
       this.themeTopYs.push(Number.MAX_VALUE)
-      console.log(this.themeTopYs)
+      // console.log(this.themeTopYs)
     },
     titleClick(index) {
       // console.log('titleClick---', index)
@@ -151,6 +154,7 @@ export default {
           break
         }
       }
+      this.isShowBackTop = -position.y > TOP_DISTANCE
     }
   },
   deactivated() {
@@ -170,6 +174,7 @@ export default {
     DetailCommentInfo,
     DetailBottomBar,
     GoodsList,
+    BackTop,
     Scroll
   }
 }
