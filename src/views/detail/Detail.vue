@@ -12,6 +12,7 @@
     </scroll>
     <detail-bottom-bar @addToCart="addToCart"></detail-bottom-bar>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
+    <toast message="哈哈"></toast>
   </div>
 </template>
 
@@ -33,6 +34,7 @@ import { getDetail, Goods, Shop, GoodsParam, getRecommend } from 'network/detail
 import { itemListenerMixin, backTopMixin } from 'common/mixin'
 import { TOP_DISTANCE } from 'common/const'
 import { mapActions } from 'vuex'
+import Toast from '../../components/common/toast/Toast'
 export default {
   name: 'Detail',
   mixins: [itemListenerMixin, backTopMixin],
@@ -182,6 +184,7 @@ export default {
     this.$bus.$off('itemImageLoad', this.ItemImgListener)
   },
   components: {
+    Toast,
     DetailNavBar,
     DetailSwiper,
     DetailBaseInfo,
