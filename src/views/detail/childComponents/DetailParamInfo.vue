@@ -3,7 +3,9 @@
     <table v-for="(table, index) in paramInfo.sizes"
            class="info-size" :key="index">
       <tr v-for="(tr, indey) in table" :key="indey">
-        <td v-for="(td, indez) in tr" :key="indez">{{td}}</td>
+        <td v-for="(td, indez) in tr" :key="indez">
+          {{td === '无' ? '尺码' : td }}
+        </td>
       </tr>
     </table>
     <table class="info-param">

@@ -60,6 +60,14 @@ export default {
       this.$refs.scroll && this.$refs.scroll.scrollTo(0, 0, 0)
       this.iid = this.$route.params.iid
       getDetail(this.iid).then(res => {
+        // console.log(res)
+        if (res === undefined) {
+          this.$toast.show('该商品接口数据已失效,自动退回上一步操作', 2500)
+          setTimeout(() => {
+            this.$router.go(-1)
+          }, 3000)
+          return null
+        }
         const data = res.result
         // console.log(res)
         // 获取顶部轮播数据

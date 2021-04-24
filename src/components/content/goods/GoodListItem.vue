@@ -42,7 +42,11 @@ export default {
   },
   computed: {
     showImage() {
-      return this.goodsItem.image || this.goodsItem.show.img
+      if (this.goodsItem.img !== undefined) {
+        return this.goodsItem.img
+      } else {
+        return this.goodsItem.image || this.goodsItem.show.img || this.goodsItem.img
+      }
     }
   }
 }
