@@ -5,7 +5,9 @@ export const addCart = function ({ commit, state }, { product }) {
     item => item.iid === product.iid
   )
   if (oldProduct) {
+    // console.log(ADD_COUNTER)
     commit(ADD_COUNTER, oldProduct)
+    // commit(ADD_TO_CART, product)
   } else {
     product.count = 1
     commit(ADD_TO_CART, product)

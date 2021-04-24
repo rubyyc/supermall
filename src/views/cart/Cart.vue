@@ -6,6 +6,7 @@
       </div>
     </nav-bar>
     <cart-list></cart-list>
+    <cart-bottom-bar></cart-bottom-bar>
   </div>
 </template>
 
@@ -13,6 +14,7 @@
 import NavBar from 'components/common/navbar/NavBar'
 import CartList from './childComponents/CartList'
 import { mapGetters } from 'vuex'
+import CartBottomBar from './childComponents/CartBottomBar'
 export default {
   name: 'Cart',
   computed: {
@@ -20,7 +22,7 @@ export default {
       'cartLength'
     ])
   },
-  components: { CartList, NavBar }
+  components: { CartBottomBar, CartList, NavBar }
 }
 </script>
 
