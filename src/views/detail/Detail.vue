@@ -12,7 +12,6 @@
     </scroll>
     <detail-bottom-bar @addToCart="addToCart"></detail-bottom-bar>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
-    <toast :message="message" :show="show"></toast>
   </div>
 </template>
 
@@ -34,7 +33,7 @@ import { getDetail, Goods, Shop, GoodsParam, getRecommend } from 'network/detail
 import { itemListenerMixin, backTopMixin } from 'common/mixin'
 import { TOP_DISTANCE } from 'common/const'
 import { mapActions } from 'vuex'
-import Toast from '../../components/common/toast/Toast'
+
 export default {
   name: 'Detail',
   mixins: [itemListenerMixin, backTopMixin],
@@ -49,9 +48,7 @@ export default {
       commentInfo: {},
       recommends: [],
       themeTopYs: [],
-      currentIndex: 0,
-      message: '',
-      show: false
+      currentIndex: 0
     }
   },
   created() {
@@ -175,12 +172,13 @@ export default {
       // console.log(product)
       this.addCart({ product }).then(res => {
         console.log(res)
-        this.show = true
-        this.message = res
-        setTimeout(() => {
-          this.show = false
-          this.message = ''
-        }, 1500)
+        // this.show = true
+        // this.message = res
+        // setTimeout(() => {
+        //   this.show = false
+        //   this.message = ''
+        // }, 1500)
+        this.$toast.show(res, 1500)
       })
     }
   },
@@ -192,7 +190,6 @@ export default {
     this.$bus.$off('itemImageLoad', this.ItemImgListener)
   },
   components: {
-    Toast,
     DetailNavBar,
     DetailSwiper,
     DetailBaseInfo,
