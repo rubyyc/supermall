@@ -12,7 +12,7 @@
     </scroll>
     <detail-bottom-bar @addToCart="addToCart"></detail-bottom-bar>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
-    <toast message="哈哈"></toast>
+    <toast :message="message" :show="show"></toast>
   </div>
 </template>
 
@@ -49,7 +49,9 @@ export default {
       commentInfo: {},
       recommends: [],
       themeTopYs: [],
-      currentIndex: 0
+      currentIndex: 0,
+      message: '',
+      show: false
     }
   },
   created() {
@@ -173,6 +175,12 @@ export default {
       // console.log(product)
       this.addCart({ product }).then(res => {
         console.log(res)
+        this.show = true
+        this.message = res
+        setTimeout(() => {
+          this.show = false
+          this.message = ''
+        }, 1500)
       })
     }
   },
