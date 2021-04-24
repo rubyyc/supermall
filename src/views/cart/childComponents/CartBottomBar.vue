@@ -1,7 +1,7 @@
 <template>
   <div class="bottom-bar">
     <div class="check-content">
-      <check-button @click.native="checkAllClick" class="check-button"></check-button>
+      <check-button @click.native="checkAllClick" class="check-button" :is-checked="isCheckedAll"></check-button>
       <span>全选</span>
     </div>
     <div class="price">
@@ -20,6 +20,9 @@ export default {
   name: 'CartBottomBar',
   components: { CheckButton },
   computed: {
+    ...mapGetters([
+      'cartList'
+    ]),
     totalPrice() {
       return '￥' + this.cartList.filter(item => {
         return item.checked
@@ -30,13 +33,27 @@ export default {
     checkLength() {
       return this.cartList.filter(item => item.checked).length
     },
-    ...mapGetters([
-      'cartList'
-    ])
+    isCheckedAll() {
+      if (this.cartList.length) {
+        return this.cartList.length && this.cartList.find(item => item.checked === false) === undefined
+      }
+      return false
+    }
   },
   methods: {
     checkAllClick() {
       console.log('----')
+      // 1. 全选-> 不全选
+      if (this.isCheckedAll) {
+        this.cartList.forEach(item => {
+          item.checked = false
+        })
+      } else {
+        this.cartList.forEach(item => {
+          item.checked = true
+        })
+      }
+      // this.isCheckedAll = !this.isCheckedAll
     }
   }
 }
