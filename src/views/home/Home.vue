@@ -105,12 +105,13 @@ export default {
       getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
+        console.log(this.goods[type])
         // this.$refs.scroll.scroll.refresh()
       })
     },
     // 事件监听
     tabClick(index) {
-      // console.log(index)
+      console.log(index)
       switch (index) {
         case 0:
           this.currentType = 'pop'
