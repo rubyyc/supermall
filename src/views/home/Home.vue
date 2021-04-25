@@ -67,7 +67,18 @@ export default {
       isShowBackTop: false,
       tabOffsetTop: 0,
       isTabFixed: false,
-      saveY: 0
+      saveY: 0,
+      positions: {
+        pop: {
+          position: 0
+        },
+        new: {
+          position: 0
+        },
+        sell: {
+          position: 0
+        }
+      }
     }
   },
   computed: {
@@ -105,7 +116,7 @@ export default {
       getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
-        console.log(this.goods[type])
+        // console.log(this.goods[type])
         // this.$refs.scroll.scroll.refresh()
       })
     },
@@ -122,12 +133,12 @@ export default {
         case 2:
           this.currentType = 'sell'
           break
-        default:
-          this.currentType = 'pop'
-          break
       }
       this.$refs.tabControl1.currentIndex = index
       this.$refs.tabControl2.currentIndex = index
+      // this.$refs.scroll.scroll.refresh()
+      // console.log(this.positions[this.currentType].position)
+      // this.$refs.scroll.scrollTo(0, this.positions[this.currentType].position)
     },
     // backClick() {
     //   // console.log('bc')
@@ -135,7 +146,9 @@ export default {
     // },
     // back top
     contentScroll(position) {
-      // console.log(position)
+      console.log(position.y)
+      this.positions[this.currentType].position += position.y
+      console.log(this.positions)
       // const y = position.y
       this.isShowBackTop = -position.y > TOP_DISTANCE
       // 吸顶效果
